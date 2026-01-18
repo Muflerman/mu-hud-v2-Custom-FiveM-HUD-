@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MU HUD - Compact & Squared</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- 🎬 BARRAS DE CINE -->
+  <div id="cinematic-top"></div>
+  <div id="cinematic-bottom"></div>
+
+  <!-- 🟢 PLAYER HUD (Abajo Izquierda) -->
+  <div id="player-hud-container">
+    <div id="status-icons-row">
+      <!-- 1. Micrófono -->
+      <div id="mute-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="currentColor" />
+          <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"
+            fill="currentColor" />
+        </svg>
+      </div>
+
+      <!-- 2. Vida -->
+      <div id="health-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            fill="currentColor" />
+        </svg>
+        <div id="health"></div>
+      </div>
+
+      <!-- 3. Escudo -->
+      <div id="armor-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="currentColor" />
+        </svg>
+        <div id="armor"></div>
+      </div>
+
+      <!-- 4. Comida -->
+      <div id="hunger-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
+            fill="currentColor" />
+        </svg>
+        <div id="hunger"></div>
+      </div>
+
+      <!-- 5. Bebida -->
+      <div id="thirst-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3 2l2.01 18.23C5.13 21.23 5.97 22 7 22h10c1.03 0 1.87-.77 1.99-1.77L21 2H3zm9 17c-1.66 0-3-1.34-3-3 0-2 3-5.4 3-5.4s3 3.4 3 5.4c0 1.66-1.34 3-3 3z"
+            fill="currentColor" />
+        </svg>
+        <div id="thirst"></div>
+      </div>
+
+      <!-- 6. Estrés -->
+      <div id="stress-container" class="hud-field">
+        <svg class="hud-icon" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M184 0c30.9 0 56 25.1 56 56V456c0 30.9-25.1 56-56 56c-28.9 0-52.7-21.9-55.7-50.1c-5.2 1.4-10.7 2.1-16.3 2.1c-35.3 0-64-28.7-64-64c0-7.4 1.3-14.6 3.6-21.2C21.4 367.4 0 338.2 0 304c0-31.9 18.7-59.5 45.8-72.3C37.1 220.8 32 207 32 192c0-30.7 21.6-56.3 50.4-62.6C80.8 123.9 80 118 80 112c0-29.9 20.6-55.1 48.3-62.1C131.3 21.9 155.1 0 184 0zM328 0c28.9 0 52.6 21.9 55.7 49.9c27.8 7 48.3 32.1 48.3 62.1c0 6-.8 11.9-2.4 17.4c28.8 6.2 50.4 31.9 50.4 62.6c0 15-5.1 28.8-13.8 39.7C493.3 244.5 512 272.1 512 304c0 34.2-21.4 63.4-51.6 74.8c2.3 6.6 3.6 13.8 3.6 21.2c0 35.3-28.7 64-64 64c-5.6 0-11.1-.7-16.3-2.1c-3 28.2-26.8 50.1-55.7 50.1c-30.9 0-56-25.1-56-56V56c0-30.9 25.1-56 56-56z" />
+        </svg>
+        <div id="stress"></div>
+      </div>
+
+    </div>
+
+    <!-- Stamina 
+    <div id="player-bottom-bar">
+      <div id="player-bottom-fill"></div>
+    </div>
+    -->
+  </div>
+
+  </div>
+
+  <!-- 🚗 VEHICLE HUD (Inspirado en la imagen) -->
+  <div id="vehicle-hud-container">
+    <!-- Grupo Superior: Velocidad, Marcha y Estados -->
+    <div class="hud-group-box">
+      <div class="hud-main-box">
+        <!-- Sección Velocidad -->
+        <div class="speed-section">
+          <div class="speed-display">
+            <div id="speed-val"><span>0</span><span>0</span><span>0</span></div>
+          </div>
+          <div class="speed-unit">KMH</div>
+        </div>
+        <!-- Sección Marcha -->
+        <div class="gear-section">
+          <i class="bi bi-gear-wide-connected"></i>
+          <div id="gear-val">3</div>
+        </div>
+      </div>
+
+      <!-- Fila de Estados (Cinturón, Gasolina, Motor) -->
+      <div class="hud-status-row">
+        <div class="status-item" id="belt-item">
+          <i class="bi bi-person-workspace"></i>
+          <span id="belt-text">OFF</span>
+        </div>
+        <div class="status-item" id="fuel-item">
+          <i class="bi bi-fuel-pump-fill"></i>
+          <span id="fuel-text">80%</span>
+        </div>
+        <div class="status-item" id="engine-item">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span id="engine-text">81%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de RPM Inferior (Caja separada) -->
+    <div class="rpm-container-outer">
+      <div class="rpm-container">
+        <div class="rpm-bar">
+          <div id="rpm-fill"></div>
+        </div>
+        <i class="bi bi-speedometer2 rpm-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🗺️ MINIMAPA -->
+  <div id="minimap-frame"></div>
+
+  <!-- 🏔️ COMPAS Y CALLES (Arriba Centro) -->
+  <div id="compass-street-container">
+    <div class="compass-box">
+      <div class="street-left" id="street-1">Vespucci Blvd</div>
+      <span class="compass-side side-left" id="compass-left">W</span>
+      <span class="compass-main" id="compass-main">NW</span>
+      <span class="compass-side side-right" id="compass-right">N</span>
+      <div class="street-right" id="street-2">Elgin Ave</div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

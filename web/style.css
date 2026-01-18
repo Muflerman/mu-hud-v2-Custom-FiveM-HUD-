@@ -1,0 +1,800 @@
+@import url('https://fonts.cdnfonts.com/css/tt-autonomous-trl');
+/* MU HUD STYLES */
+@import url('https://fonts.cdnfonts.com/css/obised');
+@import url('https://fonts.cdnfonts.com/css/digital-7-mono');
+
+/* =========================================================
+   VARIABLES PERSONALIZABLES
+   ========================================================= */
+:root {
+  /* 📍 HUD del jugador */
+  --player-hud-left: 10px;
+  --player-hud-bottom: 05px;
+  --player-hud-width: 285px;
+  --player-hud-padding: 8px;
+  --player-hud-gap: 14px;
+  --icon-size: 36px;
+  --icon-gap: 4px;
+  --icon-border-radius: 0;
+  --rpm-opacity: 0.5;
+  --rpm-vibration: 0ms;
+  --veh-scale: 0.8;
+  --veh-hud-right: 25px;
+  --veh-hud-bottom: 25px;
+  /* ⬅️ AJUSTA AQUÍ PARA HACERLA MÁS GRANDE (1.1, 1.2) O PEQUEÑA (0.8, 0.9) */
+
+  /* 📊 Barra de stamina */
+  --stamina-bar-height: 8px;
+  --stamina-bar-radius: 0;
+
+  /* 🏔️ HUD DE COMPAS Y CALLES */
+  --compass-bg: rgba(15, 15, 15, 0.75);
+  --compass-border: rgba(255, 255, 255, 0.15);
+  --compass-scale: 0.5;
+  /* ⬅️ AJUSTA AQUÍ PARA HACERLA MÁS GRANDE (1.1) O PEQUEÑA (0.9) */
+
+  /* 📍 Marco del minimapa */
+  --mm-frame-width: 295px;
+  --mm-frame-height: 220px;
+  --mm-frame-color: #212121a9;
+  --mm-frame-thickness: 3px;
+  --mm-frame-radius: 4px;
+  --mm-frame-glow: 0 0 50px rgba(65, 66, 67, 0.527);
+  --mm-mask-color: rgba(2, 2, 2, 0.158);
+  --accent-color: #00d5ff;
+}
+
+/* =========================================================
+   ESTILOS GENERALES
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  display: none;
+  font-family: Arial, sans-serif;
+}
+
+/* =========================================================
+   HUD DEL JUGADOR
+   ========================================================= */
+#player-hud-container {
+  position: absolute;
+  left: var(--player-hud-left);
+  bottom: var(--player-hud-bottom);
+  width: fit-content;
+  display: none;
+  flex-direction: column;
+  gap: var(--player-hud-gap);
+  z-index: 1000;
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  transform: scale(var(--player-scale, 1.0));
+  transform-origin: bottom left;
+}
+
+#status-icons-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.hud-field {
+  position: relative;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  border-radius: 4px;
+  background: rgba(15, 15, 15, 0.75);
+  border: 1.5px solid rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+.hud-icon {
+  width: 22px;
+  height: 22px;
+  z-index: 5;
+  pointer-events: none;
+  position: relative;
+  color: #ffffff !important;
+  /* Forzar blanco */
+  fill: #ffffff !important;
+  /* Forzar relleno blanco para SVGs */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 1));
+}
+
+.hud-icon path {
+  fill: currentColor !important;
+}
+
+#health,
+#armor,
+#thirst,
+#hunger,
+#stress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--fill, 0%);
+  transition: height .35s ease;
+  z-index: 1;
+}
+
+/* COLORES JUGADOR - Estilo Glassmorphism Acorde al Vehicle HUD */
+#health-container {
+  background: rgba(255, 61, 61, 0.15);
+  border-color: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 10px rgba(255, 61, 61, 0.05);
+}
+
+#health {
+  background: linear-gradient(to top, rgba(255, 61, 61, 0.8) 0%, rgba(255, 107, 107, 0.5) 100%);
+}
+
+#armor-container {
+  background: rgba(39, 52, 236, 0.15);
+  border-color: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 10px rgba(74, 144, 226, 0.05);
+}
+
+#armor {
+  background: linear-gradient(to top, rgba(39, 52, 236, 0.8) 0%, rgba(74, 144, 226, 0.5) 100%);
+}
+
+#hunger-container {
+  background: rgba(49, 233, 178, 0.15);
+  border-color: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 10px rgba(92, 184, 92, 0.05);
+}
+
+#hunger {
+  background: linear-gradient(to top, rgba(76, 175, 80, 0.8) 0%, rgba(92, 184, 92, 0.5) 100%);
+}
+
+#thirst-container {
+  background: rgba(51, 155, 240, 0.15);
+  border-color: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 10px rgba(51, 155, 240, 0.05);
+}
+
+#thirst {
+  background: linear-gradient(to top, rgba(51, 155, 240, 0.8) 0%, rgba(74, 144, 226, 0.5) 100%);
+}
+
+#stress-container {
+  background: rgba(255, 146, 43, 0.15);
+  border-color: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 10px rgba(255, 146, 43, 0.05);
+}
+
+#stress {
+  background: linear-gradient(to top, rgba(253, 125, 20, 0.8) 0%, rgba(255, 146, 43, 0.5) 100%);
+}
+
+
+#stamina {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--fill, 0%);
+  background: linear-gradient(to top, #f1c40f 0%, #f39c12 100%);
+  transition: height .35s ease;
+  z-index: 1;
+}
+
+
+#oxygen {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: var(--fill, 0%);
+  background: linear-gradient(to top, #3498db 0%, #2980b9 100%);
+  transition: height .35s ease;
+  z-index: 1;
+}
+
+/* Micrófono */
+#mute-container {
+  background: #41b9dd4f;
+}
+
+#mute-container .hud-icon {
+  color: #fff;
+}
+
+#mute-container.talking {
+  background: rgba(20, 50, 30, 0.8);
+  border-color: #5cb85c;
+}
+
+#mute-container.talking .hud-icon {
+  color: #5cb85c;
+  animation: pulse-talk 1s infinite;
+}
+
+@keyframes pulse-talk {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Animaciones de Advertencia (Hambre, Sed, Estrés) */
+@keyframes shake-warning {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-2px, -2px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(2px, -1px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(-2px, 2px) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(2px, 2px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate(-2px, -1px) rotate(1deg);
+  }
+
+  60% {
+    transform: translate(2px, 1px) rotate(0deg);
+  }
+
+  70% {
+    transform: translate(-2px, 2px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(2px, -2px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(-2px, 1px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes pulse-warning {
+  0% {
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 0 0px #ff922b);
+  }
+
+  50% {
+    transform: scale(1.3);
+    filter: brightness(1.8) drop-shadow(0 0 15px #ff922b);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1) drop-shadow(0 0 0px #ff922b);
+  }
+}
+
+.hud-field.warning .hud-icon {
+  animation: shake-warning 0.2s infinite linear;
+  color: #ff3d3d !important;
+  fill: #ff3d3d !important;
+}
+
+#stress-container.warning .hud-icon {
+  animation: pulse-warning 0.8s infinite ease-in-out;
+  color: #ff922b62 !important;
+  fill: #ff922b85 !important;
+}
+
+/* Stamina & Oxygen */
+#player-bottom-bar {
+  width: 100%;
+  height: var(--stamina-bar-height);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: var(--stamina-bar-radius);
+  overflow: hidden;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  transition: all 0.5s ease;
+}
+
+#player-bottom-fill {
+  height: 100%;
+  width: var(--stamina, 100%);
+  background: linear-gradient(to right, #00d5ff5e 0%, #0099cc56 100%);
+  transition: width 0.3s ease, background 0.5s ease;
+}
+
+/* Estado de Buceo (Oxígeno) */
+#player-bottom-bar.diving {
+  border-color: rgba(51, 155, 240, 0.6);
+  box-shadow: 0 0 10px rgba(51, 155, 240, 0.3);
+}
+
+#player-bottom-bar.diving #player-bottom-fill {
+  background: linear-gradient(to right, #339bf0 0%, #00d5ff 100%);
+  box-shadow: 0 0 15px rgba(0, 213, 255, 0.5);
+}
+
+/* =========================================================
+   VEHICLE HUD (NUEVO ESTILO)
+   ========================================================= */
+#vehicle-hud-container {
+  display: none;
+  position: absolute;
+  left: var(--veh-hud-left);
+  top: var(--veh-hud-top);
+  right: var(--veh-hud-right);
+  bottom: var(--veh-hud-bottom);
+  width: 280px;
+  flex-direction: column;
+  gap: 10px;
+  font-family: 'Outfit', sans-serif;
+  user-select: none;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  transform: scale(var(--veh-scale));
+  transform-origin: bottom right;
+}
+
+/* 1. CAJA GRUPAL SUPERIOR (Con borde exterior) */
+.hud-group-box {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.hud-main-box {
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  display: flex;
+  overflow: hidden;
+  height: 90px;
+}
+
+.speed-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 80%);
+}
+
+#speed-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 64px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 2;
+  transition: all 0.3s ease;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+}
+
+.ghost-digit {
+  color: rgba(255, 255, 255, 0.05) !important;
+  text-shadow: none !important;
+}
+
+.speed-display {
+  position: relative;
+  width: 110px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.speed-unit {
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+.gear-section {
+  width: 65px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gear-section i {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+#gear-val {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+/* 2. FILA DE ESTADOS */
+.hud-status-row {
+  display: flex;
+  gap: 6px;
+  height: 40px;
+}
+
+.status-item {
+  flex: 1;
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.status-item i {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Colores de Estado Genéricos */
+.status-item.active {
+  background: rgba(50, 150, 50, 0.2);
+  border-color: rgba(100, 255, 100, 0.3);
+  color: #5cb85c;
+}
+
+.status-item.active i {
+  color: #5cb85c;
+  filter: drop-shadow(0 0 5px rgba(92, 184, 92, 0.4));
+}
+
+.status-item.warning {
+  background: rgba(250, 176, 5, 0.15);
+  border-color: rgba(250, 176, 5, 0.3);
+  color: #fab005;
+}
+
+.status-item.warning i {
+  color: #fab005;
+  filter: drop-shadow(0 0 5px rgba(250, 176, 5, 0.4));
+}
+
+.status-item.low {
+  background: rgba(255, 61, 61, 0.15);
+  border-color: rgba(255, 61, 61, 0.3);
+  color: #ff3d3d;
+}
+
+.status-item.low i {
+  color: #ff3d3d;
+  filter: drop-shadow(0 0 5px rgba(255, 61, 61, 0.4));
+}
+
+/* Animación opcional para alertas críticas */
+#fuel-item.low,
+#engine-item.low {
+  animation: status-pulse 1.5s infinite;
+}
+
+.critical-blink {
+  animation: critical-pulse 0.5s infinite !important;
+  background: rgba(255, 0, 0, 0.4) !important;
+  border-color: #ff0000 !important;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6) !important;
+}
+
+.belt-blink {
+  animation: critical-pulse 0.5s infinite !important;
+}
+
+@keyframes critical-pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes status-pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fuel-pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#engine-item.warning {
+  background: rgba(150, 100, 50, 0.25);
+  border-color: rgba(255, 150, 50, 0.3);
+}
+
+#engine-item.warning i {
+  color: #fab005;
+}
+
+#engine-item.low {
+  background: rgba(150, 50, 50, 0.25);
+  border-color: rgba(255, 50, 50, 0.3);
+}
+
+#engine-item.low i {
+  color: #ff3d3d;
+}
+
+/* 3. BARRA DE RPM CON BORDE EXTERIOR */
+.rpm-container-outer {
+  background: rgba(15, 15, 15, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  border-radius: 6px;
+  padding: 8px;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8), 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.rpm-container {
+  height: 40px;
+  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.rpm-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+#rpm-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 77, 77, 0.8) 50%, #ff4d4d 100%);
+  transition: width 0.1s linear;
+  box-shadow: 2px 0 10px rgba(255, 77, 77, 0.3);
+  opacity: var(--rpm-opacity);
+}
+
+.rpm-container.vibrating {
+  animation: rpm-shake 0.1s infinite;
+}
+
+@keyframes rpm-shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(0.4px, -0.4px);
+  }
+
+  50% {
+    transform: translate(-0.4px, 0.4px);
+  }
+
+  75% {
+    transform: translate(0.4px, 0.2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.rpm-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #fff;
+  z-index: 2;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================
+   COMPAS Y CALLES (ARRIBA CENTRO)
+   ========================================================= */
+#compass-street-container {
+  display: none;
+  position: fixed;
+  top: 25px;
+  /* Altura fija centrada */
+  left: 50%;
+  transform: translateX(-50%) scale(var(--compass-scale));
+  transform-origin: top center;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  font-family: 'Outfit', sans-serif;
+  pointer-events: none;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+body.veh-active #compass-street-container {
+  display: flex;
+}
+
+.compass-box {
+  background: var(--compass-bg);
+  border: 1px solid var(--compass-border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 8px 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  min-width: 120px;
+  position: relative;
+  /* Importante para las calles absolutas */
+}
+
+/* Calles: Posición absoluta respecto a compass-box */
+.street-left,
+.street-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  display: none;
+}
+
+.street-left {
+  right: calc(100% + 25px);
+  /* Se expande a la izquierda */
+  text-align: right;
+}
+
+.street-right {
+  left: calc(100% + 25px);
+  /* Se expande a la derecha */
+  text-align: left;
+}
+
+body.veh-active .street-left,
+body.veh-active .street-right {
+  display: block !important;
+}
+
+.compass-main {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.compass-side {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1;
+}
+
+/* =========================================================
+   MINIMAPA FRAME
+   ========================================================= */
+#minimap-frame {
+  display: none;
+  position: fixed;
+  left: 10px;
+  bottom: 67px;
+  width: 300px;
+  height: 220px;
+  border: 3px solid #212121a9;
+  border-radius: 4px;
+  box-shadow: 0 0 50px rgba(65, 66, 67, 0.527);
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 2400;
+  pointer-events: none;
+}
+
+/* 🎬 BARRAS DE CINE */
+#cinematic-top,
+#cinematic-bottom {
+  display: none;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 10vh;
+  background: black;
+  z-index: 9999;
+}
+
+#cinematic-top {
+  top: 0;
+}
+
+#cinematic-bottom {
+  bottom: 0;
+}
