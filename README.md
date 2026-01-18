@@ -20,7 +20,14 @@ HUD premium para FiveM basado en Qbox/QBCore con un diseño limpio, moderno y al
   - Ganancia por disparos o alta velocidad.
   - Efectos visuales de desenfoque y temblor de cámara según el nivel.
 - 📍 **Minimapa Cuadrado**: Personalización de escala y posición en tiempo real.
-- ⚙️ **Menú de Configuración**: Cambia escalas, visibilidad y colores del GPS (requiere `ox_lib`).
+- ⚙️ **Menú de Configuración Completo** (ox_lib):
+  - Control de visibilidad de todos los elementos del HUD.
+  - Mostrar/Ocultar el marco del minimapa.
+  - Mostrar/Ocultar la brújula y calles.
+  - Ajustes de escalas, posiciones y colores del GPS.
+  - Todas las configuraciones se guardan automáticamente.
+
+
 
 ## 🚀 Optimización
 
@@ -33,6 +40,53 @@ El recurso ha sido optimizado para mantener un **0.00ms - 0.01ms** en reposo (Re
 
 - `/hudmenu`: Abre el menú de configuración (Escalas, Colores, Posiciones).
 - `/togglebelt` (Tecla 'B'): Pone o quita el cinturón de seguridad.
+- `/hudres`: Muestra tu resolución actual y si tiene configuración personalizada.
+- `/hudreload`: Recarga las configuraciones de resolución sin reiniciar el recurso.
+
+## 📐 Configuración por Resolución
+
+El HUD incluye un sistema de configuración automática según la resolución de pantalla del jugador. Esto garantiza que el HUD se vea perfecto en cualquier monitor, desde laptops hasta monitores 4K.
+
+### Resoluciones Soportadas
+- **1920x1080** (Full HD)
+- **2560x1440** (2K/QHD)
+- **3840x2160** (4K/UHD)
+- **3440x1440** (Ultrawide 21:9)
+- **1366x768** (Laptops)
+- **default** (Para cualquier otra resolución)
+
+### Personalización
+Puedes personalizar cada resolución editando `config.lua`. Cada resolución puede tener configuraciones únicas para:
+- Escala del HUD del jugador y del vehículo
+- Posiciones de todos los elementos
+- Tamaño de iconos
+- Dimensiones del minimapa
+
+Para más detalles, consulta **[CONFIGURACION_RESOLUCIONES.md](CONFIGURACION_RESOLUCIONES.md)**.
+
+## 🎛️ Panel de Controles del HUD
+
+El HUD incluye un panel de controles visual en la interfaz que permite personalizar la visibilidad de elementos sin necesidad de comandos o editar archivos.
+
+### Cómo Usar
+
+1. **Abrir el Panel**: Haz clic en el icono de engranaje (⚙️) en la esquina superior derecha de la pantalla.
+2. **Controles Disponibles**:
+   - **Marco Minimapa**: Muestra u oculta el marco decorativo del minimapa.
+   - **Brújula**: Muestra u oculta la brújula y los nombres de las calles.
+3. **Indicadores Visuales**:
+   - 🟢 **Verde con ojo abierto** = Elemento visible
+   - 🔴 **Rojo con ojo tachado** = Elemento oculto
+4. **Persistencia**: Tus preferencias se guardan automáticamente y se mantienen entre sesiones.
+
+### Características
+
+- ✅ Interfaz visual moderna y elegante
+- ✅ Animaciones suaves al mostrar/ocultar elementos
+- ✅ Guardado automático de preferencias (localStorage)
+- ✅ Diseño responsive que se adapta a diferentes resoluciones
+- ✅ Cierre automático al hacer clic fuera del menú
+
 
 ## 🛠️ Requisitos
 
@@ -45,7 +99,38 @@ El recurso ha sido optimizado para mantener un **0.00ms - 0.01ms** en reposo (Re
 2. Añade `ensure mu-hud` a tu `server.cfg`.
 3. Configura las opciones en `config.lua` a tu gusto.
 
+---
+## 🌐 Subir a GitHub (Instrucciones Temporales)
 
+Sigue estos pasos para crear tu repositorio en GitHub y subir este código:
+
+1. **Inicia Git en esta carpeta**:
+   ```bash
+   git init
+   ```
+
+2. **Añade todos los archivos**:
+   ```bash
+   git add .
+   ```
+
+3. **Crea el primer commit**:
+   ```bash
+   git commit -m "Initial commit: MU-HUD Optimized & Refined"
+   ```
+
+4. **Crea un repositorio en GitHub**:
+   - Ve a [github.com/new](https://github.com/new)
+   - Ponle el nombre: `mu-hud`
+   - Dale a **Create repository**.
+
+5. **Conecta y sube el código**:
+   *(Sustituye TU_USUARIO por tu nombre de GitHub)*
+   ```bash
+   git branch -M main
+   git remote add origin https://github.com/TU_USUARIO/mu-hud.git
+   git push -u origin main
+   ```
+
+---
 **Desarrollado con ❤️ para comunidades de Roleplay.**
-![8a78d3ffdd14e8e3d912e8b3962f3a05](https://github.com/user-attachments/assets/5d420f41-4409-494c-960b-2e2b4575e3b2)
-

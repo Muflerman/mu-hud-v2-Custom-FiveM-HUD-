@@ -1,5 +1,57 @@
 $(document).ready(function () {
   /* =========================================================
+     CONFIGURACIÓN DE RESOLUCIÓN
+     ========================================================= */
+  let resolutionSettings = null;
+
+  // Función para aplicar configuraciones de resolución
+  function applyResolutionSettings(settings) {
+    if (!settings) return;
+
+    // Player HUD
+    if (settings.playerHud) {
+      const ph = settings.playerHud;
+      if (ph.scale) document.documentElement.style.setProperty('--player-scale', ph.scale);
+      if (ph.left) document.documentElement.style.setProperty('--player-hud-left', ph.left);
+      if (ph.bottom) document.documentElement.style.setProperty('--player-hud-bottom', ph.bottom);
+      if (ph.iconSize) document.documentElement.style.setProperty('--icon-size', ph.iconSize);
+      if (ph.gap) document.documentElement.style.setProperty('--player-hud-gap', ph.gap);
+    }
+
+    // Vehicle HUD
+    if (settings.vehicleHud) {
+      const vh = settings.vehicleHud;
+      if (vh.scale) document.documentElement.style.setProperty('--veh-scale', vh.scale);
+      if (vh.right) document.documentElement.style.setProperty('--veh-hud-right', vh.right);
+      if (vh.bottom) document.documentElement.style.setProperty('--veh-hud-bottom', vh.bottom);
+    }
+
+    // Compass
+    if (settings.compass) {
+      const c = settings.compass;
+      if (c.scale) document.documentElement.style.setProperty('--compass-scale', c.scale);
+      if (c.top) {
+        const compassContainer = document.getElementById('compass-street-container');
+        if (compassContainer) compassContainer.style.top = c.top;
+      }
+    }
+
+    // Minimap
+    if (settings.minimap) {
+      const m = settings.minimap;
+      if (m.width) document.documentElement.style.setProperty('--mm-frame-width', m.width);
+      if (m.height) document.documentElement.style.setProperty('--mm-frame-height', m.height);
+      const minimapFrame = document.getElementById('minimap-frame');
+      if (minimapFrame) {
+        if (m.left) minimapFrame.style.left = m.left;
+        if (m.bottom) minimapFrame.style.bottom = m.bottom;
+        if (m.width) minimapFrame.style.width = m.width;
+        if (m.height) minimapFrame.style.height = m.height;
+      }
+    }
+  }
+
+  /* =========================================================
      UTILIDADES
      ========================================================= */
   const clamp100 = (v) => Math.max(0, Math.min(100, Math.floor(v || 0)));
@@ -279,8 +331,94 @@ $(document).ready(function () {
           $('#cinematic-top, #cinematic-bottom').fadeOut();
         }
         break;
+
+      case 'applyResolutionSettings':
+        resolutionSettings = data.settings;
+        applyResolutionSettings(resolutionSettings);
+        break;
+    }
+  });
+
+  /* =========================================================
+     PANEL DE CONTROLES DEL HUD
+     ========================================================= */
+
+  // Estado inicial de los controles (cargar desde localStorage)
+  let minimapFrameVisible = localStorage.getItem('minimapFrameVisible') !== 'false';
+  let compassVisible = localStorage.getItem('compassVisible') !== 'false';
+
+  // Aplicar estado inicial
+  function applyControlStates() {
+    if (!minimapFrameVisible) {
+      $('#minimap-frame').hide();
+      $('#toggle-minimap-frame').removeClass('active').attr('data-active', 'false');
+      $('#toggle-minimap-frame i').removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+    }
+    if (!compassVisible) {
+      $('#compass-street-container').hide();
+      $('#toggle-compass').removeClass('active').attr('data-active', 'false');
+      $('#toggle-compass i').removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+    }
+  }
+
+  applyControlStates();
+
+  // Toggle del menú de controles
+  $('#toggle-controls').on('click', function () {
+    $('#controls-menu').toggleClass('hidden');
+  });
+
+  // Toggle del marco del minimapa
+  $('#toggle-minimap-frame').on('click', function () {
+    const btn = $(this);
+    const isActive = btn.attr('data-active') === 'true';
+
+    if (isActive) {
+      // Ocultar
+      $('#minimap-frame').fadeOut(300);
+      btn.removeClass('active').attr('data-active', 'false');
+      btn.find('i').removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+      minimapFrameVisible = false;
+      localStorage.setItem('minimapFrameVisible', 'false');
+    } else {
+      // Mostrar
+      $('#minimap-frame').fadeIn(300);
+      btn.addClass('active').attr('data-active', 'true');
+      btn.find('i').removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
+      minimapFrameVisible = true;
+      localStorage.setItem('minimapFrameVisible', 'true');
+    }
+  });
+
+  // Toggle de la brújula
+  $('#toggle-compass').on('click', function () {
+    const btn = $(this);
+    const isActive = btn.attr('data-active') === 'true';
+
+    if (isActive) {
+      // Ocultar
+      $('#compass-street-container').fadeOut(300);
+      btn.removeClass('active').attr('data-active', 'false');
+      btn.find('i').removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+      compassVisible = false;
+      localStorage.setItem('compassVisible', 'false');
+    } else {
+      // Mostrar
+      $('#compass-street-container').fadeIn(300);
+      btn.addClass('active').attr('data-active', 'true');
+      btn.find('i').removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
+      compassVisible = true;
+      localStorage.setItem('compassVisible', 'true');
+    }
+  });
+
+  // Cerrar el menú al hacer clic fuera
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('#hud-controls-panel').length) {
+      $('#controls-menu').addClass('hidden');
     }
   });
 
   function json(obj) { return JSON.stringify(obj); }
 });
+

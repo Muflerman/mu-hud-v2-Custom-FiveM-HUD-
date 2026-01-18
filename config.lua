@@ -16,6 +16,303 @@ Config.Keybinds = false       -- Activar/Desactivar combinaciones de teclas pers
 Config.CinematicMode = false  -- Estado por defecto del modo cinemático
 
 -- =============================================================================================
+-- 2.1 CONFIGURACIÓN POR RESOLUCIÓN
+-- =============================================================================================
+-- Ajusta automáticamente el HUD según la resolución de pantalla del jugador
+-- Puedes personalizar cada resolución individualmente o usar 'default' para todas
+
+Config.UseResolutionScaling = true -- Activar/Desactivar ajuste automático por resolución
+
+-- Configuraciones predefinidas por resolución
+Config.ResolutionSettings = {
+    -- 1920x1080 (Full HD - Más común)
+    ['1920x1080'] = {
+        playerHud = {
+            scale = 1.0,       -- Escala del HUD del jugador
+            left = '10px',     -- Posición desde la izquierda
+            bottom = '5px',    -- Posición desde abajo
+            iconSize = '36px', -- Tamaño de los iconos
+            gap = '14px'       -- Espacio entre elementos
+        },
+        vehicleHud = {
+            scale = 0.8,    -- Escala del HUD del vehículo
+            right = '25px', -- Posición desde la derecha
+            bottom = '25px' -- Posición desde abajo
+        },
+        compass = {
+            scale = 0.5, -- Escala del compás
+            top = '25px' -- Posición desde arriba
+        },
+        minimap = {
+            width = '300px',  -- Ancho del marco del minimapa
+            height = '220px', -- Alto del marco del minimapa
+            left = '10px',    -- Posición desde la izquierda
+            bottom = '67px'   -- Posición desde abajo
+        }
+    },
+
+    -- 2560x1440 (2K/QHD)
+    ['2560x1440'] = {
+        playerHud = {
+            scale = 1.15,
+            left = '15px',
+            bottom = '8px',
+            iconSize = '40px',
+            gap = '16px'
+        },
+        vehicleHud = {
+            scale = 0.9,
+            right = '30px',
+            bottom = '30px'
+        },
+        compass = {
+            scale = 0.6,
+            top = '30px'
+        },
+        minimap = {
+            width = '340px',
+            height = '250px',
+            left = '15px',
+            bottom = '80px'
+        }
+    },
+
+    -- 3840x2160 (4K/UHD)
+    ['3840x2160'] = {
+        playerHud = {
+            scale = 1.5,
+            left = '20px',
+            bottom = '10px',
+            iconSize = '48px',
+            gap = '20px'
+        },
+        vehicleHud = {
+            scale = 1.2,
+            right = '40px',
+            bottom = '40px'
+        },
+        compass = {
+            scale = 0.8,
+            top = '40px'
+        },
+        minimap = {
+            width = '450px',
+            height = '330px',
+            left = '20px',
+            bottom = '100px'
+        }
+    },
+
+    -- 3440x1440 (Ultrawide 21:9)
+    ['3440x1440'] = {
+        playerHud = {
+            scale = 1.1,
+            left = '15px',
+            bottom = '8px',
+            iconSize = '38px',
+            gap = '15px'
+        },
+        vehicleHud = {
+            scale = 0.85,
+            right = '30px',
+            bottom = '30px'
+        },
+        compass = {
+            scale = 0.55,
+            top = '30px'
+        },
+        minimap = {
+            width = '330px',
+            height = '240px',
+            left = '15px',
+            bottom = '75px'
+        }
+    },
+
+    -- 1366x768 (Laptops comunes)
+    ['1366x768'] = {
+        playerHud = {
+            scale = 0.85,
+            left = '8px',
+            bottom = '4px',
+            iconSize = '32px',
+            gap = '12px'
+        },
+        vehicleHud = {
+            scale = 0.7,
+            right = '20px',
+            bottom = '20px'
+        },
+        compass = {
+            scale = 0.45,
+            top = '20px'
+        },
+        minimap = {
+            width = '270px',
+            height = '200px',
+            left = '8px',
+            bottom = '60px'
+        }
+    },
+
+    -- 2560x1080 (Ultrawide 21:9 - Resolución más baja)
+    ['2560x1080'] = {
+        playerHud = {
+            scale = 1.0,
+            left = '20px',
+            bottom = '5px',
+            iconSize = '36px',
+            gap = '14px'
+        },
+        vehicleHud = {
+            scale = 0.8,
+            right = '35px',
+            bottom = '25px'
+        },
+        compass = {
+            scale = 0.5,
+            top = '25px'
+        },
+        minimap = {
+            width = '310px',
+            height = '225px',
+            left = '20px',
+            bottom = '67px'
+        }
+    },
+
+    -- 1920x1200 (16:10 - WUXGA)
+    ['1920x1200'] = {
+        playerHud = {
+            scale = 1.0,
+            left = '10px',
+            bottom = '8px',
+            iconSize = '36px',
+            gap = '14px'
+        },
+        vehicleHud = {
+            scale = 0.8,
+            right = '25px',
+            bottom = '28px'
+        },
+        compass = {
+            scale = 0.5,
+            top = '28px'
+        },
+        minimap = {
+            width = '300px',
+            height = '220px',
+            left = '10px',
+            bottom = '72px'
+        }
+    },
+
+    -- 2560x1600 (16:10 - WQXGA)
+    ['2560x1600'] = {
+        playerHud = {
+            scale = 1.15,
+            left = '15px',
+            bottom = '10px',
+            iconSize = '40px',
+            gap = '16px'
+        },
+        vehicleHud = {
+            scale = 0.9,
+            right = '30px',
+            bottom = '35px'
+        },
+        compass = {
+            scale = 0.6,
+            top = '35px'
+        },
+        minimap = {
+            width = '340px',
+            height = '250px',
+            left = '15px',
+            bottom = '85px'
+        }
+    },
+
+    -- 5120x1440 (32:9 - Super Ultrawide)
+    ['5120x1440'] = {
+        playerHud = {
+            scale = 1.15,
+            left = '60px', -- Muy alejado del borde en pantallas super anchas
+            bottom = '8px',
+            iconSize = '40px',
+            gap = '16px'
+        },
+        vehicleHud = {
+            scale = 0.9,
+            right = '60px', -- Muy alejado del borde derecho
+            bottom = '30px'
+        },
+        compass = {
+            scale = 0.6,
+            top = '30px'
+        },
+        minimap = {
+            width = '340px',
+            height = '250px',
+            left = '60px', -- Muy alejado del borde
+            bottom = '80px'
+        }
+    },
+
+    -- 1280x1024 (5:4 - Monitores antiguos)
+    ['1280x1024'] = {
+        playerHud = {
+            scale = 0.75,
+            left = '8px',
+            bottom = '5px',
+            iconSize = '30px',
+            gap = '10px'
+        },
+        vehicleHud = {
+            scale = 0.65,
+            right = '18px',
+            bottom = '20px'
+        },
+        compass = {
+            scale = 0.4,
+            top = '20px'
+        },
+        minimap = {
+            width = '260px',
+            height = '195px',
+            left = '8px',
+            bottom = '58px'
+        }
+    },
+
+    -- Configuración por defecto (se usa si no coincide ninguna resolución)
+    ['default'] = {
+        playerHud = {
+            scale = 1.0,
+            left = '10px',
+            bottom = '5px',
+            iconSize = '36px',
+            gap = '14px'
+        },
+        vehicleHud = {
+            scale = 0.8,
+            right = '25px',
+            bottom = '25px'
+        },
+        compass = {
+            scale = 0.5,
+            top = '25px'
+        },
+        minimap = {
+            width = '300px',
+            height = '220px',
+            left = '10px',
+            bottom = '67px'
+        }
+    }
+}
+
+-- =============================================================================================
 -- 3. SISTEMA DE ESTRÉS
 -- =============================================================================================
 Config.DisableStress = false       -- Cambiar a false para activar el sistema de estrés

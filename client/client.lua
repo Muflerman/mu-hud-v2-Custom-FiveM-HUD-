@@ -42,6 +42,25 @@ end
 CreateThread(function()
     hideAllHUD()
     Wait(1000)
+
+    -- Detectar y aplicar configuraciones de resolución
+    if Config.UseResolutionScaling then
+        local resX, resY = GetActiveScreenResolution()
+        local resKey = string.format('%dx%d', resX, resY)
+        local settings = Config.ResolutionSettings[resKey] or Config.ResolutionSettings['default']
+
+        if settings then
+            -- Enviar configuraciones al NUI
+            SendNUIMessage({
+                action = 'applyResolutionSettings',
+                settings = settings
+            })
+
+            -- Mensaje de debug (opcional, puedes comentarlo)
+            print(string.format('[MU-HUD] Resolución detectada: %s - Aplicando configuraciones', resKey))
+        end
+    end
+
     if shouldShowHUD() then
         TriggerEvent('hud:client:LoadMap')
     end
@@ -576,6 +595,7 @@ end, false)
 -- ======================
 local hudSettings = {
     minimap = true,
+    minimapFrame = true,
     compass = true,
     playerHud = true,
     vehicleHud = true,
@@ -646,6 +666,13 @@ CreateThread(function()
         DisplayRadar(hudSettings.minimap)
         SendNUIMessage({ action = 'updateCinematicBars', show = hudSettings.cinematic })
         if not hudSettings.minimap then SendNUIMessage({ action = 'updateHUDVisibility', element = 'minimap-frame', show = false }) end
+        if not hudSettings.minimapFrame then
+            SendNUIMessage({
+                action = 'updateHUDVisibility',
+                element = 'minimap-frame',
+                show = false
+            })
+        end
         if not hudSettings.compass then
             SendNUIMessage({
                 action = 'updateHUDVisibility',
@@ -854,6 +881,22 @@ function openHUDMenu()
                         element = 'minimap-frame',
                         show = hudSettings
                             .minimap
+                    })
+                    saveSettings()
+                    openHUDMenu()
+                    lib.showContext('hud_visibility_menu')
+                end
+            },
+            {
+                title = (hudSettings.minimapFrame and 'Ocultar' or 'Mostrar') .. ' Marco del Minimapa',
+                description = 'Muestra u oculta el marco decorativo del minimapa',
+                icon = hudSettings.minimapFrame and 'check' or 'x',
+                onSelect = function()
+                    hudSettings.minimapFrame = not hudSettings.minimapFrame
+                    SendNUIMessage({
+                        action = 'updateHUDVisibility',
+                        element = 'minimap-frame',
+                        show = hudSettings.minimapFrame
                     })
                     saveSettings()
                     openHUDMenu()
@@ -1099,6 +1142,7 @@ AddEventHandler('hud:client:syncMinimapNative', function(data)
     local padX = 0.003
     local padY = 0.003
 
+
     SetMinimapComponentPosition('minimap', 'L', 'T', x + padX, y + padY, w - (padX * 2.5), h - (padY * 2.5))
     SetMinimapComponentPosition('minimap_mask', 'L', 'T', x + padX, y + padY, w - (padX * 2.5), h - (padY * 2.5))
     SetMinimapComponentPosition('minimap_blur', 'L', 'T', x, y, w, h)
@@ -1106,3 +1150,69 @@ AddEventHandler('hud:client:syncMinimapNative', function(data)
     SetMinimapClipType(0)
     SetRadarZoom(1100)
 end)
+
+-- ======================
+-- 13. COMANDOS DE RESOLUCIÓN
+-- ======================
+
+-- Comando para ver la resolución actual
+RegisterCommand('hudres', function()
+    local resX, resY = GetActiveScreenResolution()
+    local resKey = string.format('%dx%d', resX, resY)
+    local hasCustom = Config.ResolutionSettings[resKey] ~= nil
+
+    TriggerEvent('chat:addMessage', {
+        color = { 0, 213, 255 },
+        multiline = true,
+        args = { "[MU-HUD]", string.format("Resolución actual: %s", resKey) }
+    })
+
+    if hasCustom then
+        TriggerEvent('chat:addMessage', {
+            color = { 92, 184, 92 },
+            multiline = true,
+            args = { "[MU-HUD]", "✓ Configuración personalizada encontrada" }
+        })
+    else
+        TriggerEvent('chat:addMessage', {
+            color = { 250, 176, 5 },
+            multiline = true,
+            args = { "[MU-HUD]", "⚠ Usando configuración por defecto" }
+        })
+    end
+end, false)
+
+-- Comando para recargar configuraciones de resolución
+RegisterCommand('hudreload', function()
+    if not Config.UseResolutionScaling then
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 61, 61 },
+            multiline = true,
+            args = { "[MU-HUD]", "El ajuste por resolución está desactivado en config.lua" }
+        })
+        return
+    end
+
+    local resX, resY = GetActiveScreenResolution()
+    local resKey = string.format('%dx%d', resX, resY)
+    local settings = Config.ResolutionSettings[resKey] or Config.ResolutionSettings['default']
+
+    if settings then
+        SendNUIMessage({
+            action = 'applyResolutionSettings',
+            settings = settings
+        })
+
+        TriggerEvent('chat:addMessage', {
+            color = { 92, 184, 92 },
+            multiline = true,
+            args = { "[MU-HUD]", string.format("✓ Configuraciones recargadas para %s", resKey) }
+        })
+    else
+        TriggerEvent('chat:addMessage', {
+            color = { 255, 61, 61 },
+            multiline = true,
+            args = { "[MU-HUD]", "✗ Error al cargar configuraciones" }
+        })
+    end
+end, false)
