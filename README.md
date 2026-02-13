@@ -99,38 +99,3 @@ El HUD incluye un panel de controles visual en la interfaz que permite personali
 2. Añade `ensure mu-hud` a tu `server.cfg`.
 3. Configura las opciones en `config.lua` a tu gusto.
 
----
-## 🌐 Subir a GitHub (Instrucciones Temporales)
-
-Sigue estos pasos para crear tu repositorio en GitHub y subir este código:
-
-1. **Inicia Git en esta carpeta**:
-   ```bash
-   git init
-   ```
-
-2. **Añade todos los archivos**:
-   ```bash
-   git add .
-   ```
-
-3. **Crea el primer commit**:
-   ```bash
-   git commit -m "Initial commit: MU-HUD Optimized & Refined"
-   ```
-
-4. **Crea un repositorio en GitHub**:
-   - Ve a [github.com/new](https://github.com/new)
-   - Ponle el nombre: `mu-hud`
-   - Dale a **Create repository**.
-
-5. **Conecta y sube el código**:
-   *(Sustituye TU_USUARIO por tu nombre de GitHub)*
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/TU_USUARIO/mu-hud.git
-   git push -u origin main
-   ```
-
----
-**Desarrollado con ❤️ para comunidades de Roleplay.**
